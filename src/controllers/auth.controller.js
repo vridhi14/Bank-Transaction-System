@@ -1,12 +1,26 @@
 const userModel = require("../models/user.model")
-
+const jwt = require("jsonwebtoken")
 /*
 user register controller : 
  - POST / api / auth / register 
  */
-function userRegisterController(req , res){
+async function userRegisterController(req , res){
 
-    const{email , password , name }= req.body(); 
+    const{email , password , name }= req.body();
+    const isEixts = await userModel.findOne({
+        email: email 
+    })
+    if(isExists){
+        return res.status(422).json({
+            message : "user already exists with email" , 
+            status : "failed"
+        })
+    }
+    const user = await userModel.create({
+        email , password , name
+    }) 
+
+    const token = jwt.sign({userId:user_id}, process.env.JWT_SECRET, {expiresIn:3}); 
 
 }
 
