@@ -34,7 +34,13 @@ async function userRegisterController(req , res){
 
 }
 
+/*user login controller
+ POST / api / auth / login
+*/
+async function userLoginController(){
+
+}
 
 module.exports = {
-    userRegisterController
+    userRegisterController , userLoginController 
 }
