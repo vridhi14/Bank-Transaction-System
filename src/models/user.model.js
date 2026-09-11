@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
 })
 
 //pre = convert password to hash 
-userSchema.pre("save" , async function(next){
+userSchema.pre("save" , async function(){
     //if there is no change in password do nothing
     if(!this.isModified(password)){
         return next(); 
@@ -34,7 +34,7 @@ userSchema.pre("save" , async function(next){
     const hash = await bcrypt.hash(this.password , 10); 
     this.password = hash ;
 
-    return next()
+   
 });
 
 //the hash that is saved in db , it will compare hash with the password 
