@@ -39,6 +39,15 @@ const sendEmail = async (to, subject, text, html) => {
   }
 };
 
-module.exports = sendEmail;
+async function sendRegisterationEmail(userEmail , name){
+    const subject = 'welcome to bank transactoin system'; 
+    const text = `Hello ${name},\n\n Thank You for registering at back transaction system. We're excited to have uh on board!\n\n Best regards.\n The Bank Transaction Team `; 
+    const html = `<p>Hello ${name},</p><p>Thank You for registering at back transaction system. We're excited to have uh on board!</p><p> Best regards,<br> The Bank Transaction Team</p>`; 
 
-module.exports = transporter;
+    await sendEmail(userEmail ,subject , text ,html); 
+}
+
+module.exports = {
+    sendRegisterationEmail
+}
+
