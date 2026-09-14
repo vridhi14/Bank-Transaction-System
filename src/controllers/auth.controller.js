@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 async function userRegisterController(req, res) {
   const { email, password, name } = req.body;
 
-  const isExists = await userModel.findOne({ email });
+  const isExists = await userModel.findOne({ email : email });
   if (isExists) {
     return res.status(422).json({ message: "user already exists with email", status: "failed" });
   }
