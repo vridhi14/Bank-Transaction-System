@@ -3,7 +3,7 @@ const accountSchema = new mongoose.Schema({
     user:{
         type:mongoose.Schema.Types.ObjectId , 
         ref:"user",
-        required : [ture , "Account must be associated with a user"], 
+        required : [true , "Account must be associated with a user"], 
         index : true //B+ tree 
     }, 
     status : {
@@ -16,7 +16,7 @@ const accountSchema = new mongoose.Schema({
     },
     currency:{
         type:String , 
-        required : [ture , "Currency is required for creating an account"], 
+        required : [true , "Currency is required for creating an account"], 
         default : "INR"
     }, 
 
