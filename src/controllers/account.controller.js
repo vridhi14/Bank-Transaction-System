@@ -1,1 +1,19 @@
 const accountModel = require("../models/account.model");
+
+
+//create an account with user id nd send it as response 
+async function createAccountController(req,res){
+    const user = req.usre; 
+
+    const account = await accountModel.create({
+        user : user._id
+    })
+
+    res.status(201).json({
+        account
+    })
+}
+
+module.exports = {
+    createAccountController
+}
