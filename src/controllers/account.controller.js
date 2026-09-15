@@ -3,7 +3,7 @@ const accountModel = require("../models/account.model");
 
 //create an account with user id nd send it as response 
 async function createAccountController(req,res){
-    const user = req.usre; 
+    const user = req.user; 
 
     const account = await accountModel.create({
         user : user._id

@@ -7,6 +7,7 @@ const accountSchema = new mongoose.Schema({
         index : true //B+ tree 
     }, 
     status : {
+        type:"String" , 
         enum: {
             values:["ACTIVE","FROZEN","CLOSE"], 
             message : "Status can be either ACTIVE , FROZEN OR CLOSE ",
