@@ -89,6 +89,7 @@ async function createTransaction(req , res){
         status:"PENDING"
     } , {session})
 
+    //6 , 7 = CREATE DEBIT AND CREDIT LEDGER ENTRY 
     const debitLedgerEntry = await ledgerModel.create({
         acount : fromAccount , 
         amount : amount , 
@@ -103,12 +104,16 @@ async function createTransaction(req , res){
         type : "CREDIT"
     }, {startSession})
 
-    transaction.status = "COMPLETED" ; 
+    //8 MARK TRANSACTION COMPLETED 
+    transaction.status = "COMPLETED" ;
     await transaction.save({session}); 
-
+    
+    //9 COMMIT MONGODB SESSION
     await session.commitTransaction(); 
     session.endSession(); 
 
+    //10 SEND EMAIL NOTIFICATION 
+    
 
 
 }
