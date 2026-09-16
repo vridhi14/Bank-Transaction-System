@@ -2,7 +2,7 @@ const trasanctionModel = require("../models/transaction.model");
 const ledgerModel = require("../models/ledger.model"); 
 const emailService = require("../services/email.service"); 
 const accountModel = require("../models/account.model"); 
-
+const mongoose = require("mongoose"); 
 
 /* 
 - CREATE A NEW TRANSACTION ~ 
@@ -77,8 +77,9 @@ async function createTransaction(req , res){
         res.stauts(400).json({message : `Insufficient Balance . Current balance is ${balance}. Requested amount is ${amount}`})
     }
 
-    //5 CREATE TRANSACTION 
-    
+    //5 CREATE TRANSACTION (PENDING)
+    const session = await mongoose.startSession(); 
+    session.startTransaction();
 
 }
     
