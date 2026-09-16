@@ -1,3 +1,8 @@
+const trasanctionModel = require("../models/transaction.model"); 
+const ledgerModel = require("../models/ledger.model"); 
+const emailService = require("../services/email.service"); 
+const accountModel = require("../models/account.model"); 
+
 
 /* 
 - CREATE A NEW TRANSACTION ~ 
@@ -16,6 +21,27 @@
  */
 
 async function createTransaction(req , res){ 
-    const { fromAccout , toAccount , amount , idempotencyKey} = req.body ; 
+
+    //1. TRANSACTION REQUEST ! 
     
+    const { fromAccount , toAccount , amount , idempotencyKey} = req.body ; 
+    if( !fromAccount || !toAccount || !amount || !idempotencyKey){
+        return res.status(400).json({message : "fromAccount , toAccont, amount and idempotency Key is required"})
+    }
+
+    //fromAccount and toAccount exists ? 
+    const fromUserAccount = await accountModel.findOne({
+        _id : fromAccount , 
+    }); 
+    const toUserAccount = await accountModel.findOne({
+        _id : toAccount , 
+    }); 
+
+    if(!fromUserAccount || !toUserAccount){
+        return res.status(400).json({
+            message : "Invalid fromAccount or toAccount"
+        })
+    }
+    
+
 }
