@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"); 
 const ledgerSchema = new mongoose.Schema({
     account : {
-        type : mongoose.Schema.Types.objectId , 
+        type : mongoose.Schema.Types.ObjectId , 
         ref : "account", 
         required : [true , "ledger must be associated with an account"],
         index : true , 
@@ -13,7 +13,7 @@ const ledgerSchema = new mongoose.Schema({
         immutable : true , 
     }, 
     transaction : {
-        type : mongoose.Schema.Types.objectId , 
+        type : mongoose.Schema.Types.ObjectId , 
         ref : "transaction", 
         required : [true , "ledger must be associated with a transaction"],
         index : true , 
@@ -22,7 +22,7 @@ const ledgerSchema = new mongoose.Schema({
     type : {
         type : String , 
         enum : {
-            values : ["CREDI" , "DEBIT"], 
+            values : ["CREDIT" , "DEBIT"], 
             message : "Type can be either CREDIT or DEBIT", 
         }, 
         required : [true , "Ledger type is required"], 
