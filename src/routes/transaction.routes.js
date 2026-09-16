@@ -11,6 +11,6 @@ transactionRoutes.post("/", authMiddleware.authMiddleware , transactionControlle
 
 // POST/api/transaction/system/intial-funds
 //create initial funds transaction
-transactionRoutes.post("/system/initial-funds" , )
+transactionRoutes.post("/system/initial-funds" , authMiddleware.authSystemUserMiddleware , transactionController.createInitialFundsTransaction)
 
 module.exports = transactionRouter ;

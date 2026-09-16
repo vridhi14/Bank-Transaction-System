@@ -122,7 +122,11 @@ async function createTransaction(req , res){
 
 }
 
+async function createInitialFundsTransaction(req,res){
+    
+}
+
 module.exports = {
-    createTransaction
+    createTransaction , createInitialFundsTransaction
 }
     
