@@ -113,8 +113,12 @@ async function createTransaction(req , res){
     session.endSession(); 
 
     //10 SEND EMAIL NOTIFICATION 
-    
+    await emailService.sendTransactionEmail(req.user.email , req.user.name , amount , toAccount ); 
 
+    return res.status(201).json({
+        message : "Transaction completed successfully", 
+        transaction : transaction 
+    })
 
 }
     
