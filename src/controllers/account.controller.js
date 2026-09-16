@@ -1,6 +1,5 @@
 const accountModel = require("../models/account.model");
 
-
 //create an account with user id nd send it as response 
 async function createAccountController(req,res){
     const user = req.user; 
