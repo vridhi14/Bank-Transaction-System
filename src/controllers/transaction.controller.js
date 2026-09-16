@@ -23,7 +23,6 @@ const accountModel = require("../models/account.model");
 async function createTransaction(req , res){ 
 
     //1. TRANSACTION REQUEST ! 
-    
     const { fromAccount , toAccount , amount , idempotencyKey} = req.body ; 
     if( !fromAccount || !toAccount || !amount || !idempotencyKey){
         return res.status(400).json({message : "fromAccount , toAccont, amount and idempotency Key is required"})
@@ -42,6 +41,41 @@ async function createTransaction(req , res){
             message : "Invalid fromAccount or toAccount"
         })
     }
-    
+
+    // 2 VALIDATE IDEMPOTENCY KEY 
+    //with the existing idempotencykey whether any other transaction exists or not!
+    const isTransactionAlreadyExists = await transactionModel.findOnde({
+        idempotencyKey : idempotencyKey 
+    }); 
+    if(isTransactionAlreadyExists){
+        if(isTransactionAlreadyExists.status == "COMPLETED"){
+            return res.status(200).json({
+                message : "transaction already processed" , 
+                transaction : isTransactionAlreadyExists
+            })
+        }
+        if(isTransactionAlreadyExists.status == "PENDING"){
+            return res.stauts(200).json({message:"transaction is still processing"})
+        } 
+        if(isTransactionAlreadyExists.status == "FAILED"){
+            return res.stauts(500).json({message:"transaction processing failed , please retry"})
+        } 
+        if(isTransactionAlreadyExists.status == "REVERSED"){
+            return res.stauts(500).json({message:"transaction was reversed, please retry"})
+        } 
+    }
+
+    // 3 CHECK ACCOUNT STATUS - from or to user account is close or frozen ? 
+    if(fromUserAccount.status !== "ACTIVE" || toUserAccount.status !== "ACTIVE"){
+       return res.json(400).json({
+        message : "both fromAccount and toAccount must be ACTIVE to process transaction" }); 
+    }
+
+    //4 DERIVE SENDER BALANCE FROM LEDGER ( sufficient balance is there or not) 
+    const balance = await fromUserAccount.getBalance(); 
+    if(balance < amount){
+        
+    }
 
 }
+    
