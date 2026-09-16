@@ -185,7 +185,6 @@ async function createInitialFundsTransaction(req,res){
         message : "Initial funds transaction completed successfully" , 
         transaction : transaction 
     });
-
 }
 
 module.exports = {
