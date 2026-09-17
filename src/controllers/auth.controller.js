@@ -1,75 +1,84 @@
-const userModel = require("../models/user.model");
-const jwt = require("jsonwebtoken");
-const emailService = require("../services/email.service")
-const tokenBlackListModel = require("../models/blackList.model"); 
+const userModel = require("../models/user.model")
+const jwt = require("jsonwebtoken")
+const tokenBlackListModel = require("../models/blackList.model")
 
-// POST /api/auth/register
-async function userRegisterController(req, res) {
-  const { email, password, name } = req.body;
+// // POST /api/auth/register
+async function authMiddleware(req, res, next) {
 
-  const isExists = await userModel.findOne({ email : email });
-  if (isExists) {
-    return res.status(422).json({ message: "user already exists with email", status: "failed" });
-  }
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[ 1 ]
 
-  const user = await userModel.create({ email, password, name });
+    if (!token) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is missing"
+        })
+    }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+    const isBlacklisted = await tokenBlackListModel.findOne({ token })
 
-  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "strict" });
-  res.status(201).json({
-    user: { _id: user._id, email: user.email, name: user.name },
-    token,
-  });
+    if (isBlacklisted) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
 
-  await emailService.sendRegisterationEmail(user.email , user.name);
+    try {
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        const user = await userModel.findById(decoded.userId)
+
+        req.user = user
+
+        return next()
+
+    } catch (err) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
 }
 
-// POST /api/auth/login
-async function userLoginController(req, res) {
-  const { email, password } = req.body;
+async function authSystemUserMiddleware(req, res, next) {
 
-  const user = await userModel.findOne({ email }).select("+password");
-  if (!user) {
-    return res.status(401).json({ message: "email or password is INVALID" });
-  }
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[ 1 ]
 
-  const isValidPassword = await user.comparePassword(password);
-  if (!isValidPassword) {
-    return res.status(401).json({ message: "email or password is INVALID" });
-  }
+    if (!token) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is missing"
+        })
+    }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "3d" });
+    const isBlacklisted = await tokenBlackListModel.findOne({ token })
 
-  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "strict" });
-  res.status(200).json({
-    user: { _id: user._id, email: user.email, name: user.name },
-    token,
-  });
-}
+    if (isBlacklisted) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
 
-async function userLogoutController(req,res){
-   const token = req.cookies.token || req.headers.authorization?.split(" ")[1]; 
-   if(!token){
-    return res.status(400).json({
-      message : "User logged out successfully"
-    })
-   }
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-   res.cookie("token" , ""); 
-   await tokenBlackListModel.create({
-    token:token
-   }); 
+        const user = await userModel.findById(decoded.userId).select("+systemUser")
+        if (!user.systemUser) {
+            return res.status(403).json({
+                message: "Forbidden access, not a system user"
+            })
+        }
 
-   return res.status(200).json({
-    message : "User logged out successfully"
-   })
+        req.user = user
 
+        return next()
+    }
+    catch (err) {
+        return res.status(401).json({
+            message: "Unauthorized access, token is invalid"
+        })
+    }
 
 }
 
-module.exports = { 
-  userRegisterController, 
-  userLoginController , 
-  userLogoutController 
-};
+module.exports = {
+    authMiddleware,
+    authSystemUserMiddleware
+}
