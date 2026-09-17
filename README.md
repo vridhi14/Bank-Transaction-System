@@ -464,17 +464,7 @@ Analytics Dashboard
 
 ### Vridhi Rajeev
 
-**Aspiring Full Stack Developer | MERN Stack Developer**
-
-Interested in:
-
-* Full Stack Development
-* Backend Engineering
-* REST APIs
-* Database Design
-* System Design
-* Cloud & DevOps
-* Problem Solving
+** Full Stack Developer | MERN Stack Developer**
 
 ---
 
