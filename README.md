@@ -476,12 +476,6 @@ Interested in:
 * Cloud & DevOps
 * Problem Solving
 
-### Connect With Me
-
-* 💻 GitHub: https://github.com/vridhi14
-* 🔗 LinkedIn: Add your LinkedIn profile here
-* 🧩 LeetCode: Add your LeetCode profile here
-
 ---
 
 ## ⭐ Show Your Support
