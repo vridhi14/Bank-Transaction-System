@@ -26,6 +26,18 @@ async function getAccountBalance(req,res){
         _id : accountId , 
         user : req.user._id 
     }) 
+
+    if(!account){
+        return res.status(404).json({
+            message:"Account not found"
+        })
+    }
+
+    const balance = await account.getBalance(); 
+    res.statu(200).json({
+           accountId : account._id , 
+           balance : balance 
+        })
 }
 
 module.exports = {
