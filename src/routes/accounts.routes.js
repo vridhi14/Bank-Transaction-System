@@ -10,6 +10,8 @@ router.post("/" , authMiddleware.authMiddleware , accountController.createAccoun
 // -GET /api/accounts/ =>GET ALL ACCOUNTS OF THE LOGGED-IN USER , Protected route
 router.get("/" , authMiddleware.authMiddleware , accountController.getUserAccountController ); 
 
+// -GET /api/accounts/balance/:accountId 
+router.get("/balance/:accountId " , authMiddleware.authMiddleware ,accountController.getAccountBalance)
 
 
 module.exports = router ;
