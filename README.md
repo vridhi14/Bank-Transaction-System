@@ -1,12 +1,21 @@
 # 🏦 Bank Transaction System
 
-A backend-focused **Bank Transaction System** built with **Node.js, Express.js, and MongoDB**.
-The project demonstrates how banking operations can be structured using RESTful APIs, database models, transaction records, and server-side business logic.
+<p align="center">
+  A backend-focused banking application built with Node.js, Express.js, MongoDB and JWT authentication.
+</p>
 
-🔗 **Live Demo:** https://bank-transaction-system-lhca.onrender.com
-🔗 **GitHub Repository:** https://github.com/vridhi14/Bank-Transaction-System
+<p align="center">
 
----
+  <a href="https://github.com/vridhi14/Bank-Transaction-System">
+    <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub">
+  </a>
+
+  <a href="https://bank-transaction-system-lhca.onrender.com">
+    <img src="https://img.shields.io/badge/Live-Demo-46E3B7?style=for-the-badge&logo=render&logoColor=black" alt="Live Demo">
+  </a>
+
+</p>
+
 
 ## 📌 About The Project
 
