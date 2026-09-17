@@ -169,9 +169,9 @@ async function createInitialFundsTransaction(req,res){
         type : "DEBIT"
     }],{session})
 
-    await(()=>{
-        return new Promise((resolve)=> setTimeout(resolve , 100*1000))
-    })()
+    // await(()=>{
+    //     return new Promise((resolve)=> setTimeout(resolve , 100*1000))
+    // })()
     
     const creditLedgerEntry = await ledgerModel.create([{
         fromAccount : toAccount, 
@@ -180,9 +180,12 @@ async function createInitialFundsTransaction(req,res){
         type : "CREDIT"
     }],{session})
 
-    transaction.status = "COMPLETED"; 
-    await transaction.save({session}); 
-
+    await transactionModel.findOneAndUpdate(
+        {_id:transaction._id},
+        {status : "COMPLETED"},
+        {session}
+    )
+     
     await session.commitTransaction(); 
     session.endSession(); 
 
